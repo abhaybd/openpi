@@ -80,13 +80,14 @@ def maybe_download(url: str, *, force_download: bool = False, **kwargs) -> pathl
                 else:
                     local_path.unlink()
 
-            # Download the data to a local cache.
-            logger.info(f"Downloading {url} to {local_path}")
-            scratch_path = local_path.with_suffix(".partial")
-            _download_fsspec(url, scratch_path, **kwargs)
+            if not local_path.exists():
+                # Download the data to a local cache.
+                logger.info(f"Downloading {url} to {local_path}")
+                scratch_path = local_path.with_suffix(".partial")
+                _download_fsspec(url, scratch_path, **kwargs)
 
-            shutil.move(scratch_path, local_path)
-            _ensure_permissions(local_path)
+                shutil.move(scratch_path, local_path)
+                _ensure_permissions(local_path)
 
     except PermissionError as e:
         msg = (
