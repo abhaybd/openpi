@@ -45,10 +45,10 @@ def test_download_gs():
 
 
 def test_download_fsspec():
-    remote_path = "gs://big_vision/paligemma_tokenizer.model"
+    remote_path = "s3://ai2-prior-abhayd/assets/paligemma_tokenizer.model"
 
-    local_path = download.maybe_download(remote_path, gs={"token": "anon"})
+    local_path = download.maybe_download(remote_path, anon=True)
     assert local_path.exists()
 
-    new_local_path = download.maybe_download(remote_path, gs={"token": "anon"})
+    new_local_path = download.maybe_download(remote_path, anon=True)
     assert new_local_path == local_path
